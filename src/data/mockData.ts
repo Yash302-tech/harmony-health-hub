@@ -6,7 +6,7 @@ export const doctorInfo = {
   experience: 15,
   rating: 5,
   reviews: 320,
-  location: "Kolkata, West Bengal",
+  location: "Bhopal, Madhya Pradesh",
   fee: 500,
   available: true,
   avatar: "👩‍⚕️",

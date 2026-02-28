@@ -10,7 +10,7 @@ import { toast } from "sonner";
 const contactInfo = [
   { icon: Phone, label: "Phone", value: "+91 98765 43210", href: "tel:+919876543210" },
   { icon: Mail, label: "Email", value: "dr.nandita@karmakar.com", href: "mailto:dr.nandita@karmakar.com" },
-  { icon: MapPin, label: "Clinic", value: "Kolkata, West Bengal, India" },
+  { icon: MapPin, label: "Clinic", value: "Bhopal, Madhya Pradesh, India" },
   { icon: Clock, label: "Hours", value: "Mon - Sat: 10 AM - 7 PM, Sun: Closed" },
 ];
 
