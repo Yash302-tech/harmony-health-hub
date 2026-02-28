@@ -1,13 +1,14 @@
 import { Leaf, Heart, Shield, Users, Award, Target } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
+import { doctorInfo } from "@/data/mockData";
 
 const values = [
-  { icon: Heart, title: "Holistic Healing", desc: "We treat the whole person, not just the symptoms. Our approach considers mental, emotional, and physical well-being." },
-  { icon: Shield, title: "Safe & Natural", desc: "All our remedies are 100% natural with no side effects. Homeopathy works with your body's natural healing power." },
-  { icon: Users, title: "Patient-Centered", desc: "Every treatment plan is personalized. We listen carefully to understand your unique health needs." },
-  { icon: Award, title: "Expert Practitioners", desc: "Our doctors hold advanced degrees (BHMS, MD, Ph.D) with years of clinical experience in homeopathy." },
-  { icon: Target, title: "Proven Results", desc: "Thousands of patients have found relief through our treatments, with a 95% patient satisfaction rate." },
-  { icon: Leaf, title: "Home Practice", desc: "We bring quality homeopathic care to the comfort of your home, making healthcare accessible and convenient." },
+  { icon: Heart, title: "Holistic Healing", desc: "Treating the whole person — mind, body, and spirit — not just the symptoms." },
+  { icon: Shield, title: "Safe & Natural", desc: "100% natural remedies with no side effects. Homeopathy works with your body's healing power." },
+  { icon: Users, title: "Patient-Centered", desc: "Every treatment plan is personalized after detailed case-taking and understanding your unique health needs." },
+  { icon: Award, title: "15+ Years Experience", desc: `${doctorInfo.qualification} with extensive clinical experience in classical homeopathy.` },
+  { icon: Target, title: "Proven Results", desc: "320+ happy patients with a focus on chronic diseases, women's health, and pediatric care." },
+  { icon: Leaf, title: "Online & Offline", desc: "Consultations available both in-clinic (Kolkata) and online, making healthcare accessible to everyone." },
 ];
 
 const About = () => {
@@ -16,30 +17,28 @@ const About = () => {
       <div className="max-w-4xl space-y-10 animate-fade-in">
         <div className="text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-body text-sm font-medium mb-4">
-            <Leaf className="w-4 h-4" /> About HealNatura
+            <Leaf className="w-4 h-4" /> About Dr. Nandita Karmakar
           </div>
           <h1 className="text-4xl font-display font-bold text-foreground mb-4">
             Healing Naturally, One Patient at a Time
           </h1>
           <p className="text-lg text-muted-foreground font-body max-w-2xl mx-auto leading-relaxed">
-            HealNatura is a trusted homeopathic healthcare platform connecting patients with experienced 
-            practitioners who believe in the power of natural healing. Founded with the mission to make 
-            quality homeopathic care accessible to everyone.
+            {doctorInfo.about}
           </p>
         </div>
 
         {/* Mission */}
         <div className="bg-card rounded-2xl border border-border p-8 text-center">
-          <h2 className="text-2xl font-display font-semibold text-foreground mb-3">Our Mission</h2>
+          <h2 className="text-2xl font-display font-semibold text-foreground mb-3">My Mission</h2>
           <p className="text-muted-foreground font-body leading-relaxed max-w-xl mx-auto">
             To provide safe, effective, and personalized homeopathic treatments that empower individuals 
-            to achieve optimal health and well-being through nature's own medicine.
+            to achieve optimal health through nature's own medicine — accessible to everyone, everywhere.
           </p>
         </div>
 
         {/* Values */}
         <div>
-          <h2 className="text-2xl font-display font-semibold text-foreground text-center mb-6">Why Choose Us</h2>
+          <h2 className="text-2xl font-display font-semibold text-foreground text-center mb-6">Why Consult With Me</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {values.map((v) => (
               <div key={v.title} className="bg-card rounded-xl border border-border p-5 hover:shadow-md hover:border-primary/20 transition-all">
@@ -57,10 +56,10 @@ const About = () => {
         <div className="bg-primary rounded-2xl p-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
             {[
-              { label: "Happy Patients", value: "10,000+" },
-              { label: "Expert Doctors", value: "50+" },
+              { label: "Happy Patients", value: "320+" },
               { label: "Years Experience", value: "15+" },
-              { label: "Patient Satisfaction", value: "95%" },
+              { label: "Specialties", value: "6+" },
+              { label: "Patient Satisfaction", value: "98%" },
             ].map((stat) => (
               <div key={stat.label}>
                 <p className="text-3xl font-display font-bold text-primary-foreground">{stat.value}</p>

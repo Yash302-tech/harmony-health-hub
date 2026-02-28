@@ -6,21 +6,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { mockAppointments, mockDoctors } from "@/data/mockData";
+import { mockAppointments, doctorInfo } from "@/data/mockData";
 import { toast } from "sonner";
 
 const Appointments = () => {
   const [showBooking, setShowBooking] = useState(false);
-  const [selectedDoctor, setSelectedDoctor] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [notes, setNotes] = useState("");
 
   const handleBook = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Appointment booked successfully! 🎉");
+    toast.success("Appointment booked with Dr. Nandita! 🎉");
     setShowBooking(false);
-    setSelectedDoctor("");
     setDate("");
     setTime("");
     setNotes("");
@@ -32,7 +30,7 @@ const Appointments = () => {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className="text-3xl font-display font-bold text-foreground">My Appointments</h1>
-            <p className="text-muted-foreground font-body mt-1">Manage your consultations</p>
+            <p className="text-muted-foreground font-body mt-1">Book & manage consultations with {doctorInfo.name}</p>
           </div>
           <Button className="font-body" onClick={() => setShowBooking(!showBooking)}>
             <Plus className="w-4 h-4 mr-2" /> Book Appointment
@@ -42,21 +40,9 @@ const Appointments = () => {
         {/* Booking form */}
         {showBooking && (
           <div className="bg-card rounded-xl border border-border p-6 animate-scale-in">
-            <h2 className="text-xl font-display font-semibold text-foreground mb-4">Book New Appointment</h2>
+            <h2 className="text-xl font-display font-semibold text-foreground mb-1">Book with {doctorInfo.name}</h2>
+            <p className="text-sm text-muted-foreground font-body mb-4">{doctorInfo.specialty} · ₹{doctorInfo.fee} / consultation</p>
             <form onSubmit={handleBook} className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <Label className="font-body">Select Doctor</Label>
-                <Select value={selectedDoctor} onValueChange={setSelectedDoctor}>
-                  <SelectTrigger className="mt-1 font-body bg-secondary/50">
-                    <SelectValue placeholder="Choose a doctor" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {mockDoctors.map((d) => (
-                      <SelectItem key={d.id} value={d.name}>{d.name} — {d.specialty}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
               <div>
                 <Label className="font-body">Preferred Date</Label>
                 <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="mt-1 font-body bg-secondary/50" />
@@ -68,15 +54,15 @@ const Appointments = () => {
                     <SelectValue placeholder="Select time" />
                   </SelectTrigger>
                   <SelectContent>
-                    {["9:00 AM","10:00 AM","11:00 AM","12:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM"].map((t) => (
+                    {["10:00 AM","11:00 AM","12:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM","6:00 PM"].map((t) => (
                       <SelectItem key={t} value={t}>{t}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <Label className="font-body">Notes (Optional)</Label>
-                <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Describe your symptoms..." className="mt-1 font-body bg-secondary/50 resize-none" rows={1} />
+              <div className="sm:col-span-2">
+                <Label className="font-body">Describe Your Health Concern</Label>
+                <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Tell Dr. Nandita about your symptoms..." className="mt-1 font-body bg-secondary/50 resize-none" rows={3} />
               </div>
               <div className="sm:col-span-2 flex gap-3">
                 <Button type="submit" className="font-body">Confirm Booking</Button>
@@ -101,7 +87,7 @@ const Appointments = () => {
                   )}
                 </div>
                 <div>
-                  <p className="font-body font-semibold text-foreground">{apt.doctorName}</p>
+                  <p className="font-body font-semibold text-foreground">{doctorInfo.name}</p>
                   <p className="text-sm text-muted-foreground font-body">{apt.date} at {apt.time}</p>
                   <p className="text-xs text-primary font-body font-medium">{apt.type}</p>
                 </div>

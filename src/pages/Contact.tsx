@@ -9,9 +9,9 @@ import { toast } from "sonner";
 
 const contactInfo = [
   { icon: Phone, label: "Phone", value: "+91 98765 43210", href: "tel:+919876543210" },
-  { icon: Mail, label: "Email", value: "care@healnatura.com", href: "mailto:care@healnatura.com" },
-  { icon: MapPin, label: "Location", value: "Home Practice, Mumbai, Maharashtra 400001" },
-  { icon: Clock, label: "Hours", value: "Mon - Sat: 9 AM - 7 PM, Sun: Closed" },
+  { icon: Mail, label: "Email", value: "dr.nandita@karmakar.com", href: "mailto:dr.nandita@karmakar.com" },
+  { icon: MapPin, label: "Clinic", value: "Kolkata, West Bengal, India" },
+  { icon: Clock, label: "Hours", value: "Mon - Sat: 10 AM - 7 PM, Sun: Closed" },
 ];
 
 const Contact = () => {
@@ -19,7 +19,7 @@ const Contact = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent! We'll get back to you soon 📬");
+    toast.success("Message sent! Dr. Nandita will get back to you soon 📬");
     setForm({ name: "", email: "", subject: "", message: "" });
   };
 
@@ -27,8 +27,8 @@ const Contact = () => {
     <DashboardLayout>
       <div className="space-y-6 animate-fade-in">
         <div>
-          <h1 className="text-3xl font-display font-bold text-foreground">Contact & Help</h1>
-          <p className="text-muted-foreground font-body mt-1">We're here to help you with any questions</p>
+          <h1 className="text-3xl font-display font-bold text-foreground">Contact Dr. Nandita</h1>
+          <p className="text-muted-foreground font-body mt-1">Reach out for queries or appointment requests</p>
         </div>
 
         <div className="grid lg:grid-cols-5 gap-6">
@@ -53,7 +53,7 @@ const Contact = () => {
 
           {/* Contact form */}
           <div className="lg:col-span-3 bg-card rounded-xl border border-border p-6">
-            <h2 className="text-xl font-display font-semibold text-foreground mb-4">Send Us a Message</h2>
+            <h2 className="text-xl font-display font-semibold text-foreground mb-4">Send a Message</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
@@ -67,11 +67,11 @@ const Contact = () => {
               </div>
               <div>
                 <Label className="font-body">Subject</Label>
-                <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} required className="mt-1 font-body bg-secondary/50" placeholder="How can we help?" />
+                <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} required className="mt-1 font-body bg-secondary/50" placeholder="How can Dr. Nandita help?" />
               </div>
               <div>
                 <Label className="font-body">Message</Label>
-                <Textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required className="mt-1 font-body bg-secondary/50" rows={5} placeholder="Describe your query in detail..." />
+                <Textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required className="mt-1 font-body bg-secondary/50" rows={5} placeholder="Describe your health concern or query..." />
               </div>
               <Button type="submit" className="font-body">
                 <Send className="w-4 h-4 mr-2" /> Send Message
