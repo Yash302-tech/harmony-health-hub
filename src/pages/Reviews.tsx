@@ -5,15 +5,13 @@ import RatingStars from "@/components/RatingStars";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { mockReviews, mockDoctors } from "@/data/mockData";
+import { mockReviews, doctorInfo } from "@/data/mockData";
 import { toast } from "sonner";
 
 const Reviews = () => {
   const [showForm, setShowForm] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [selectedDoctor, setSelectedDoctor] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +23,6 @@ const Reviews = () => {
     setShowForm(false);
     setRating(0);
     setComment("");
-    setSelectedDoctor("");
   };
 
   return (
@@ -33,8 +30,8 @@ const Reviews = () => {
       <div className="space-y-6 animate-fade-in">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-3xl font-display font-bold text-foreground">Reviews & Ratings</h1>
-            <p className="text-muted-foreground font-body mt-1">See what patients say about our doctors</p>
+            <h1 className="text-3xl font-display font-bold text-foreground">Patient Reviews</h1>
+            <p className="text-muted-foreground font-body mt-1">What patients say about {doctorInfo.name}</p>
           </div>
           <Button className="font-body" onClick={() => setShowForm(!showForm)}>
             <MessageSquare className="w-4 h-4 mr-2" /> Write Review
@@ -44,21 +41,8 @@ const Reviews = () => {
         {/* Review form */}
         {showForm && (
           <div className="bg-card rounded-xl border border-border p-6 animate-scale-in">
-            <h2 className="text-xl font-display font-semibold text-foreground mb-4">Share Your Experience</h2>
+            <h2 className="text-xl font-display font-semibold text-foreground mb-4">Review {doctorInfo.name}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label className="font-body">Select Doctor</Label>
-                <Select value={selectedDoctor} onValueChange={setSelectedDoctor}>
-                  <SelectTrigger className="mt-1 font-body bg-secondary/50">
-                    <SelectValue placeholder="Choose a doctor" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {mockDoctors.map((d) => (
-                      <SelectItem key={d.id} value={d.name}>{d.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
               <div>
                 <Label className="font-body mb-2 block">Your Rating</Label>
                 <RatingStars rating={rating} size="lg" interactive onChange={setRating} />
@@ -68,7 +52,7 @@ const Reviews = () => {
                 <Textarea
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Share your experience with the doctor..."
+                  placeholder="Share your experience with Dr. Nandita..."
                   className="mt-1 font-body bg-secondary/50"
                   rows={4}
                   required
@@ -89,7 +73,6 @@ const Reviews = () => {
               <div className="flex items-start justify-between flex-wrap gap-2">
                 <div>
                   <p className="font-body font-semibold text-foreground">{review.patientName}</p>
-                  <p className="text-sm text-primary font-body">on {review.doctorName}</p>
                 </div>
                 <div className="text-right">
                   <RatingStars rating={review.rating} size="sm" />

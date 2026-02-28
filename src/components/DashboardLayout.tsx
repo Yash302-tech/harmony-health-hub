@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
-  Users,
   CalendarCheck,
   Star,
   Info,
@@ -12,19 +11,17 @@ import {
   Menu,
   X,
   UserCircle,
-  Search,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Find Doctors", url: "/dashboard/doctors", icon: Search },
-  { title: "My Appointments", url: "/dashboard/appointments", icon: CalendarCheck },
-  { title: "Reviews & Ratings", url: "/dashboard/reviews", icon: Star },
+  { title: "Book Appointment", url: "/dashboard/appointments", icon: CalendarCheck },
+  { title: "Reviews", url: "/dashboard/reviews", icon: Star },
   { title: "My Profile", url: "/dashboard/profile", icon: UserCircle },
-  { title: "About Us", url: "/dashboard/about", icon: Info },
-  { title: "Contact & Help", url: "/dashboard/contact", icon: Phone },
+  { title: "About Doctor", url: "/dashboard/about", icon: Info },
+  { title: "Contact", url: "/dashboard/contact", icon: Phone },
 ];
 
 interface DashboardLayoutProps {
@@ -49,7 +46,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           <Leaf className="w-8 h-8 text-sidebar-primary flex-shrink-0" />
           {sidebarOpen && (
             <div className="animate-slide-in-left">
-              <h1 className="text-xl font-display font-bold text-sidebar-foreground">HealNatura</h1>
+              <h1 className="text-lg font-display font-bold text-sidebar-foreground leading-tight">Dr. Nandita</h1>
               <p className="text-xs text-sidebar-foreground/60 font-body">Homeopathic Care</p>
             </div>
           )}

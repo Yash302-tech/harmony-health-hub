@@ -51,11 +51,14 @@ const Auth = () => {
         <div className="hero-gradient absolute inset-0" />
         <div className="relative z-10 text-center px-12">
           <Leaf className="w-16 h-16 text-primary-foreground mx-auto mb-6" />
-          <h1 className="text-5xl font-display font-bold text-primary-foreground mb-4">
-            HealNatura
+          <h1 className="text-4xl font-display font-bold text-primary-foreground mb-2">
+            Dr. Nandita Karmakar
           </h1>
-          <p className="text-xl text-primary-foreground/80 font-body">
-            Your trusted partner in natural healing & homeopathic wellness
+          <p className="text-lg text-primary-foreground/90 font-body font-medium mb-1">
+            Homeopathic Practitioner
+          </p>
+          <p className="text-primary-foreground/70 font-body">
+            Personalized natural healing — now available online
           </p>
         </div>
       </div>
@@ -67,9 +70,9 @@ const Auth = () => {
           <div className="lg:hidden text-center mb-8">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Leaf className="w-8 h-8 text-primary" />
-              <h1 className="text-3xl font-display font-bold text-foreground">HealNatura</h1>
+              <h1 className="text-2xl font-display font-bold text-foreground">Dr. Nandita Karmakar</h1>
             </div>
-            <p className="text-muted-foreground font-body text-sm">Natural Healing & Homeopathy</p>
+            <p className="text-muted-foreground font-body text-sm">Homeopathic Care — Online & Offline</p>
           </div>
 
           <div className="text-center mb-8">
@@ -78,8 +81,8 @@ const Auth = () => {
             </h2>
             <p className="text-muted-foreground mt-1 font-body">
               {authMode === "signin"
-                ? "Sign in to access your health dashboard"
-                : "Join us for personalized homeopathic care"}
+                ? "Sign in to book your consultation"
+                : "Join for personalized homeopathic care"}
             </p>
           </div>
 
@@ -139,66 +142,27 @@ const Auth = () => {
             {authMode === "signup" && (
               <div>
                 <Label htmlFor="fullName" className="font-body text-foreground">Full Name</Label>
-                <Input
-                  id="fullName"
-                  name="fullName"
-                  placeholder="Dr. John Doe"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 h-11 bg-secondary/50 border-border font-body"
-                />
+                <Input id="fullName" name="fullName" placeholder="Your full name" value={formData.fullName} onChange={handleChange} required className="mt-1 h-11 bg-secondary/50 border-border font-body" />
               </div>
             )}
 
             {loginMethod === "email" ? (
               <div>
                 <Label htmlFor="email" className="font-body text-foreground">Email Address</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 h-11 bg-secondary/50 border-border font-body"
-                />
+                <Input id="email" name="email" type="email" placeholder="you@example.com" value={formData.email} onChange={handleChange} required className="mt-1 h-11 bg-secondary/50 border-border font-body" />
               </div>
             ) : (
               <div>
                 <Label htmlFor="phone" className="font-body text-foreground">Phone Number</Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  placeholder="+91 98765 43210"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 h-11 bg-secondary/50 border-border font-body"
-                />
+                <Input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" value={formData.phone} onChange={handleChange} required className="mt-1 h-11 bg-secondary/50 border-border font-body" />
               </div>
             )}
 
             <div>
               <Label htmlFor="password" className="font-body text-foreground">Password</Label>
               <div className="relative">
-                <Input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 h-11 bg-secondary/50 border-border font-body pr-10"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
+                <Input id="password" name="password" type={showPassword ? "text" : "password"} placeholder="••••••••" value={formData.password} onChange={handleChange} required className="mt-1 h-11 bg-secondary/50 border-border font-body pr-10" />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
@@ -207,24 +171,13 @@ const Auth = () => {
             {authMode === "signup" && (
               <div>
                 <Label htmlFor="confirmPassword" className="font-body text-foreground">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  placeholder="••••••••"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 h-11 bg-secondary/50 border-border font-body"
-                />
+                <Input id="confirmPassword" name="confirmPassword" type="password" placeholder="••••••••" value={formData.confirmPassword} onChange={handleChange} required className="mt-1 h-11 bg-secondary/50 border-border font-body" />
               </div>
             )}
 
             {authMode === "signin" && (
               <div className="text-right">
-                <button type="button" className="text-sm text-primary hover:underline font-body">
-                  Forgot password?
-                </button>
+                <button type="button" className="text-sm text-primary hover:underline font-body">Forgot password?</button>
               </div>
             )}
 
@@ -235,10 +188,7 @@ const Auth = () => {
 
           <p className="text-center text-sm text-muted-foreground mt-6 font-body">
             {authMode === "signin" ? "Don't have an account? " : "Already have an account? "}
-            <button
-              onClick={() => setAuthMode(authMode === "signin" ? "signup" : "signin")}
-              className="text-primary font-semibold hover:underline"
-            >
+            <button onClick={() => setAuthMode(authMode === "signin" ? "signup" : "signin")} className="text-primary font-semibold hover:underline">
               {authMode === "signin" ? "Sign Up" : "Sign In"}
             </button>
           </p>
