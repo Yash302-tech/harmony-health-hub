@@ -8,7 +8,7 @@ const values = [
   { icon: Users, title: "Patient-Centered", desc: "Every treatment plan is personalized after detailed case-taking and understanding your unique health needs." },
   { icon: Award, title: "15+ Years Experience", desc: `${doctorInfo.qualification} with extensive clinical experience in classical homeopathy.` },
   { icon: Target, title: "Proven Results", desc: "320+ happy patients with a focus on chronic diseases, women's health, and pediatric care." },
-  { icon: Leaf, title: "Online & Offline", desc: "Consultations available both in-clinic (Kolkata) and online, making healthcare accessible to everyone." },
+  { icon: Leaf, title: "Online & Offline", desc: "Consultations available both in-clinic (Bhopal) and online, making healthcare accessible to everyone." },
 ];
 
 const About = () => {
