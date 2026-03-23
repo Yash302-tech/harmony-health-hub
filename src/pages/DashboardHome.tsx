@@ -1,13 +1,15 @@
-import { CalendarCheck, Star, Clock, Heart, Award, GraduationCap, MapPin } from "lucide-react";
+import { CalendarCheck, Star, Clock, Heart, Award, GraduationCap, MapPin, Stethoscope, AlertTriangle, RotateCcw } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import RatingStars from "@/components/RatingStars";
-import { mockAppointments, mockReviews, doctorInfo } from "@/data/mockData";
+import { mockAppointments, mockReviews, doctorInfo, mockConsultations } from "@/data/mockData";
 import heroImg from "@/assets/hero-bg.jpg";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 
 const DashboardHome = () => {
   const navigate = useNavigate();
+  const pausedSessions = mockConsultations.filter((s) => s.status === "paused");
 
   return (
     <DashboardLayout>
@@ -23,8 +25,37 @@ const DashboardHome = () => {
             <p className="text-primary-foreground/80 font-body text-lg max-w-lg">
               Your journey to natural healing with Dr. Nandita Karmakar starts here.
             </p>
+            <div className="flex flex-wrap gap-3 mt-5">
+              <Button onClick={() => navigate("/dashboard/consultation")} className="font-body">
+                <Stethoscope className="w-4 h-4 mr-2" /> Start Consultation
+              </Button>
+              <Button variant="outline" onClick={() => navigate("/dashboard/appointments")} className="font-body bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20">
+                <CalendarCheck className="w-4 h-4 mr-2" /> Book Appointment
+              </Button>
+            </div>
           </div>
         </div>
+
+        {/* Resume consultation banner */}
+        {pausedSessions.length > 0 && (
+          <div className="bg-card rounded-xl border-2 border-warning/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center flex-shrink-0">
+                <AlertTriangle className="w-6 h-6 text-warning" />
+              </div>
+              <div>
+                <p className="font-body font-semibold text-foreground">You have a paused consultation</p>
+                <p className="text-sm text-muted-foreground font-body">
+                  Session #{pausedSessions[0].id} — Step {pausedSessions[0].currentStep}/{pausedSessions[0].totalSteps} ({pausedSessions[0].steps[pausedSessions[0].currentStep - 1]?.title})
+                </p>
+                <Progress value={(pausedSessions[0].currentStep - 1) / pausedSessions[0].totalSteps * 100} className="h-1.5 w-48 mt-2" />
+              </div>
+            </div>
+            <Button onClick={() => navigate("/dashboard/consultation")} className="font-body self-start sm:self-center">
+              <RotateCcw className="w-4 h-4 mr-2" /> Resume
+            </Button>
+          </div>
+        )}
 
         {/* Doctor Profile Card */}
         <div className="bg-card rounded-2xl border border-border p-6 md:p-8">
@@ -67,9 +98,6 @@ const DashboardHome = () => {
                   </span>
                 ))}
               </div>
-              <Button className="mt-5 font-body" onClick={() => navigate("/dashboard/appointments")}>
-                <CalendarCheck className="w-4 h-4 mr-2" /> Book Consultation
-              </Button>
             </div>
           </div>
         </div>
