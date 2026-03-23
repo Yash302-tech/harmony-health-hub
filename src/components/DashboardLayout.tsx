@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 const navItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
@@ -35,17 +37,25 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOut();
+    toast.success("Logged out successfully");
     navigate("/");
   };
 
+  const initials = user?.user_metadata?.full_name
+    ? user.user_metadata.full_name.charAt(0).toUpperCase()
+    : user?.email?.charAt(0).toUpperCase() || "U";
+
   const SidebarContent = () => (
     <div className="flex flex-col h-full sidebar-gradient">
-      {/* Logo */}
       <div className="p-6 border-b border-sidebar-border">
         <div className="flex items-center gap-3">
-          <Leaf className="w-8 h-8 text-sidebar-primary flex-shrink-0" />
+          <div className="w-9 h-9 rounded-full bg-sidebar-primary/20 flex items-center justify-center flex-shrink-0">
+            <Leaf className="w-5 h-5 text-sidebar-primary" />
+          </div>
           {sidebarOpen && (
             <div className="animate-slide-in-left">
               <h1 className="text-lg font-display font-bold text-sidebar-foreground leading-tight">Dr. Nandita</h1>
@@ -55,7 +65,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </div>
       </div>
 
-      {/* Nav */}
       <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const isActive = location.pathname === item.url;
@@ -79,7 +88,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         })}
       </nav>
 
-      {/* Logout */}
       <div className="p-4 border-t border-sidebar-border">
         <Button
           variant="ghost"
@@ -95,16 +103,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
   return (
     <div className="flex min-h-screen w-full bg-background">
-      {/* Desktop sidebar */}
-      <aside
-        className={`hidden md:flex flex-col transition-all duration-300 ${
-          sidebarOpen ? "w-64" : "w-20"
-        }`}
-      >
+      <aside className={`hidden md:flex flex-col transition-all duration-300 ${sidebarOpen ? "w-64" : "w-20"}`}>
         <SidebarContent />
       </aside>
 
-      {/* Mobile sidebar overlay */}
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-foreground/50" onClick={() => setMobileSidebarOpen(false)} />
@@ -114,17 +116,12 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </div>
       )}
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Top bar */}
         <header className="h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center px-4 md:px-6 gap-4 sticky top-0 z-40">
           <button
             onClick={() => {
-              if (window.innerWidth < 768) {
-                setMobileSidebarOpen(!mobileSidebarOpen);
-              } else {
-                setSidebarOpen(!sidebarOpen);
-              }
+              if (window.innerWidth < 768) setMobileSidebarOpen(!mobileSidebarOpen);
+              else setSidebarOpen(!sidebarOpen);
             }}
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
@@ -132,16 +129,16 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           </button>
           <div className="flex-1" />
           <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground font-body hidden sm:block">
+              {user?.user_metadata?.full_name || user?.email}
+            </span>
             <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-body font-semibold text-sm">U</span>
+              <span className="text-primary-foreground font-body font-semibold text-sm">{initials}</span>
             </div>
           </div>
         </header>
 
-        {/* Page content */}
-        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto">
-          {children}
-        </main>
+        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto">{children}</main>
       </div>
     </div>
   );
