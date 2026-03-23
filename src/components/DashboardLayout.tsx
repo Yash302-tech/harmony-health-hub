@@ -11,13 +11,15 @@ import {
   Menu,
   X,
   UserCircle,
+  Stethoscope,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Book Appointment", url: "/dashboard/appointments", icon: CalendarCheck },
+  { title: "Consultation", url: "/dashboard/consultation", icon: Stethoscope },
+  { title: "Appointments", url: "/dashboard/appointments", icon: CalendarCheck },
   { title: "Reviews", url: "/dashboard/reviews", icon: Star },
   { title: "My Profile", url: "/dashboard/profile", icon: UserCircle },
   { title: "About Doctor", url: "/dashboard/about", icon: Info },
