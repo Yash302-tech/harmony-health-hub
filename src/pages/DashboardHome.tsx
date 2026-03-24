@@ -1,38 +1,15 @@
 import { CalendarCheck, Star, Clock, Heart, Award, GraduationCap, MapPin, Stethoscope, AlertTriangle, RotateCcw } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import RatingStars from "@/components/RatingStars";
-import { doctorInfo } from "@/data/mockData";
+import { mockAppointments, mockReviews, doctorInfo, mockConsultations } from "@/data/mockData";
 import heroImg from "@/assets/hero-bg.jpg";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { useEffect, useState } from "react";
-import { consultationSteps } from "@/data/mockData";
 
 const DashboardHome = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const [pausedSession, setPausedSession] = useState<any>(null);
-  const [appointments, setAppointments] = useState<any[]>([]);
-  const [reviews, setReviews] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      const [c, a, r] = await Promise.all([
-        supabase.from("consultations").select("*").eq("status", "paused").order("updated_at", { ascending: false }).limit(1),
-        supabase.from("appointments").select("*").eq("status", "upcoming").order("date", { ascending: true }).limit(3),
-        supabase.from("reviews").select("*").order("created_at", { ascending: false }).limit(3),
-      ]);
-      if (c.data?.[0]) setPausedSession(c.data[0]);
-      if (a.data) setAppointments(a.data);
-      if (r.data) setReviews(r.data);
-    };
-    fetch();
-  }, []);
-
-  const displayName = user?.user_metadata?.full_name || "there";
+  const pausedSessions = mockConsultations.filter((s) => s.status === "paused");
 
   return (
     <DashboardLayout>
@@ -43,7 +20,7 @@ const DashboardHome = () => {
           <div className="hero-gradient absolute inset-0" />
           <div className="relative z-10 p-8 md:p-12">
             <h1 className="text-3xl md:text-4xl font-display font-bold text-primary-foreground mb-2">
-              Welcome, {displayName}! 🌿
+              Welcome! 🌿
             </h1>
             <p className="text-primary-foreground/80 font-body text-lg max-w-lg">
               Your journey to natural healing with Dr. Nandita Karmakar starts here.
@@ -60,7 +37,7 @@ const DashboardHome = () => {
         </div>
 
         {/* Resume consultation banner */}
-        {pausedSession && (
+        {pausedSessions.length > 0 && (
           <div className="bg-card rounded-xl border-2 border-warning/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center flex-shrink-0">
@@ -69,9 +46,9 @@ const DashboardHome = () => {
               <div>
                 <p className="font-body font-semibold text-foreground">You have a paused consultation</p>
                 <p className="text-sm text-muted-foreground font-body">
-                  Step {pausedSession.current_step}/{pausedSession.total_steps} — {consultationSteps[pausedSession.current_step - 1]?.title}
+                  Session #{pausedSessions[0].id} — Step {pausedSessions[0].currentStep}/{pausedSessions[0].totalSteps} ({pausedSessions[0].steps[pausedSessions[0].currentStep - 1]?.title})
                 </p>
-                <Progress value={(pausedSession.current_step - 1) / pausedSession.total_steps * 100} className="h-1.5 w-48 mt-2" />
+                <Progress value={(pausedSessions[0].currentStep - 1) / pausedSessions[0].totalSteps * 100} className="h-1.5 w-48 mt-2" />
               </div>
             </div>
             <Button onClick={() => navigate("/dashboard/consultation")} className="font-body self-start sm:self-center">
@@ -111,10 +88,14 @@ const DashboardHome = () => {
                   <span>₹{doctorInfo.fee} / consultation</span>
                 </div>
               </div>
-              <p className="text-foreground/80 font-body text-sm mt-4 leading-relaxed max-w-2xl">{doctorInfo.about}</p>
+              <p className="text-foreground/80 font-body text-sm mt-4 leading-relaxed max-w-2xl">
+                {doctorInfo.about}
+              </p>
               <div className="flex flex-wrap gap-1.5 mt-4 justify-center sm:justify-start">
                 {doctorInfo.skills.map((skill) => (
-                  <span key={skill} className="px-2.5 py-1 text-xs rounded-full bg-primary/10 text-primary font-body font-medium">{skill}</span>
+                  <span key={skill} className="px-2.5 py-1 text-xs rounded-full bg-primary/10 text-primary font-body font-medium">
+                    {skill}
+                  </span>
                 ))}
               </div>
             </div>
@@ -128,16 +109,19 @@ const DashboardHome = () => {
               <Clock className="w-5 h-5 text-primary" /> Your Appointments
             </h2>
             <div className="space-y-3">
-              {appointments.length > 0 ? appointments.map((apt) => (
+              {mockAppointments.filter(a => a.status === "upcoming").map((apt) => (
                 <div key={apt.id} className="flex items-center justify-between p-3 rounded-lg bg-secondary/50">
                   <div>
                     <p className="font-body font-semibold text-foreground">{apt.type}</p>
                     <p className="text-sm text-muted-foreground font-body">{apt.date} at {apt.time}</p>
                   </div>
-                  <span className="text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary font-body font-medium">Upcoming</span>
+                  <span className="text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary font-body font-medium">
+                    Upcoming
+                  </span>
                 </div>
-              )) : (
-                <p className="text-muted-foreground font-body text-sm">No upcoming appointments — <button onClick={() => navigate("/dashboard/appointments")} className="text-primary hover:underline">book one now</button></p>
+              ))}
+              {mockAppointments.filter(a => a.status === "upcoming").length === 0 && (
+                <p className="text-muted-foreground font-body text-sm">No upcoming appointments</p>
               )}
             </div>
           </div>
@@ -148,17 +132,15 @@ const DashboardHome = () => {
               <Star className="w-5 h-5 text-accent" /> Patient Reviews
             </h2>
             <div className="space-y-3">
-              {reviews.length > 0 ? reviews.map((review) => (
+              {mockReviews.slice(0, 3).map((review) => (
                 <div key={review.id} className="p-3 rounded-lg bg-secondary/50">
                   <div className="flex items-center justify-between mb-1">
-                    <p className="font-body font-semibold text-foreground text-sm">{review.patient_name}</p>
+                    <p className="font-body font-semibold text-foreground text-sm">{review.patientName}</p>
                     <RatingStars rating={review.rating} size="sm" />
                   </div>
                   <p className="text-sm text-foreground/80 font-body mt-1 line-clamp-2">{review.comment}</p>
                 </div>
-              )) : (
-                <p className="text-muted-foreground font-body text-sm">No reviews yet — <button onClick={() => navigate("/dashboard/reviews")} className="text-primary hover:underline">write one</button></p>
-              )}
+              ))}
             </div>
           </div>
         </div>

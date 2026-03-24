@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { Phone, Mail, MapPin, Clock, Send, MessageCircle } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
 
 const contactInfo = [
   { icon: Phone, label: "Phone", value: "+91 98765 43210", href: "tel:+919876543210" },
@@ -17,28 +15,12 @@ const contactInfo = [
 ];
 
 const Contact = () => {
-  const { user } = useAuth();
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
-  const [sending, setSending] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
-    setSending(true);
-    const { error } = await supabase.from("contact_messages").insert({
-      user_id: user.id,
-      name: form.name,
-      email: form.email,
-      subject: form.subject,
-      message: form.message,
-    });
-    if (error) {
-      toast.error("Failed to send message");
-    } else {
-      toast.success("Message sent! Dr. Nandita will get back to you soon 📬");
-      setForm({ name: "", email: "", subject: "", message: "" });
-    }
-    setSending(false);
+    toast.success("Message sent! Dr. Nandita will get back to you soon 📬");
+    setForm({ name: "", email: "", subject: "", message: "" });
   };
 
   return (
@@ -50,9 +32,10 @@ const Contact = () => {
         </div>
 
         <div className="grid lg:grid-cols-5 gap-6">
+          {/* Contact info */}
           <div className="lg:col-span-2 space-y-4">
             {contactInfo.map((item) => (
-              <div key={item.label} className="bg-card rounded-xl border border-border p-4 flex items-start gap-4 hover:shadow-md hover:border-primary/20 transition-all">
+              <div key={item.label} className="bg-card rounded-xl border border-border p-4 flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <item.icon className="w-5 h-5 text-primary" />
                 </div>
@@ -66,22 +49,9 @@ const Contact = () => {
                 </div>
               </div>
             ))}
-
-            {/* WhatsApp button */}
-            <a
-              href="https://wa.me/919876543210?text=Hello%20Dr.%20Nandita%2C%20I%20need%20a%20consultation."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 bg-[hsl(142,70%,45%)] text-white rounded-xl p-4 hover:opacity-90 transition-opacity"
-            >
-              <MessageCircle className="w-6 h-6" />
-              <div>
-                <p className="font-body font-semibold text-sm">Chat on WhatsApp</p>
-                <p className="text-xs opacity-80 font-body">Quick consultation queries</p>
-              </div>
-            </a>
           </div>
 
+          {/* Contact form */}
           <div className="lg:col-span-3 bg-card rounded-xl border border-border p-6">
             <h2 className="text-xl font-display font-semibold text-foreground mb-4">Send a Message</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -103,8 +73,8 @@ const Contact = () => {
                 <Label className="font-body">Message</Label>
                 <Textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required className="mt-1 font-body bg-secondary/50" rows={5} placeholder="Describe your health concern or query..." />
               </div>
-              <Button type="submit" className="font-body" disabled={sending}>
-                <Send className="w-4 h-4 mr-2" /> {sending ? "Sending…" : "Send Message"}
+              <Button type="submit" className="font-body">
+                <Send className="w-4 h-4 mr-2" /> Send Message
               </Button>
             </form>
           </div>

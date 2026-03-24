@@ -6,9 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
-import { useEffect } from "react";
 import authBg from "@/assets/auth-bg.jpg";
 
 type AuthMode = "signin" | "signup";
@@ -16,11 +13,9 @@ type LoginMethod = "email" | "phone";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const { user, loading } = useAuth();
   const [authMode, setAuthMode] = useState<AuthMode>("signin");
   const [loginMethod, setLoginMethod] = useState<LoginMethod>("email");
   const [showPassword, setShowPassword] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -29,59 +24,24 @@ const Auth = () => {
     confirmPassword: "",
   });
 
-  useEffect(() => {
-    if (!loading && user) navigate("/dashboard", { replace: true });
-  }, [user, loading, navigate]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (authMode === "signup" && formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
-    setSubmitting(true);
-
-    try {
-      if (authMode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email: formData.email,
-          password: formData.password,
-          options: {
-            data: { full_name: formData.fullName },
-            emailRedirectTo: window.location.origin,
-          },
-        });
-        if (error) throw error;
-        toast.success("Account created! Check your email to confirm, or sign in directly.");
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
-        if (error) throw error;
-        toast.success("Welcome back! 🌿");
-        navigate("/dashboard");
-      }
-    } catch (err: any) {
-      toast.error(err.message || "Authentication failed");
-    } finally {
-      setSubmitting(false);
-    }
+    toast.success(authMode === "signin" ? "Welcome back!" : "Account created successfully!");
+    navigate("/dashboard");
   };
 
-  const handleGoogleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: window.location.origin + "/dashboard" },
-    });
-    if (error) toast.error(error.message);
+  const handleGoogleLogin = () => {
+    toast.success("Signed in with Google!");
+    navigate("/dashboard");
   };
-
-  if (loading) return null;
 
   return (
     <div className="min-h-screen flex">
@@ -90,9 +50,7 @@ const Auth = () => {
         <img src={authBg} alt="Botanical pattern" className="absolute inset-0 w-full h-full object-cover" />
         <div className="hero-gradient absolute inset-0" />
         <div className="relative z-10 text-center px-12">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary-foreground/10 backdrop-blur-sm flex items-center justify-center">
-            <Leaf className="w-10 h-10 text-primary-foreground" />
-          </div>
+          <Leaf className="w-16 h-16 text-primary-foreground mx-auto mb-6" />
           <h1 className="text-4xl font-display font-bold text-primary-foreground mb-2">
             Dr. Nandita Karmakar
           </h1>
@@ -102,13 +60,6 @@ const Auth = () => {
           <p className="text-primary-foreground/70 font-body">
             Personalized natural healing — now available online
           </p>
-          <div className="flex justify-center gap-4 mt-8">
-            {["15+ Years", "320+ Patients", "98% Satisfaction"].map((stat) => (
-              <div key={stat} className="px-4 py-2 rounded-full bg-primary-foreground/10 backdrop-blur-sm">
-                <span className="text-primary-foreground/90 font-body text-sm font-medium">{stat}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -167,6 +118,26 @@ const Auth = () => {
             </div>
           </div>
 
+          {/* Login method toggle */}
+          <div className="flex gap-2 mb-6">
+            <Button
+              variant={loginMethod === "email" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setLoginMethod("email")}
+              className="flex-1 font-body"
+            >
+              <Mail className="w-4 h-4 mr-1" /> Email
+            </Button>
+            <Button
+              variant={loginMethod === "phone" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setLoginMethod("phone")}
+              className="flex-1 font-body"
+            >
+              <Phone className="w-4 h-4 mr-1" /> Phone
+            </Button>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             {authMode === "signup" && (
               <div>
@@ -175,15 +146,22 @@ const Auth = () => {
               </div>
             )}
 
-            <div>
-              <Label htmlFor="email" className="font-body text-foreground">Email Address</Label>
-              <Input id="email" name="email" type="email" placeholder="you@example.com" value={formData.email} onChange={handleChange} required className="mt-1 h-11 bg-secondary/50 border-border font-body" />
-            </div>
+            {loginMethod === "email" ? (
+              <div>
+                <Label htmlFor="email" className="font-body text-foreground">Email Address</Label>
+                <Input id="email" name="email" type="email" placeholder="you@example.com" value={formData.email} onChange={handleChange} required className="mt-1 h-11 bg-secondary/50 border-border font-body" />
+              </div>
+            ) : (
+              <div>
+                <Label htmlFor="phone" className="font-body text-foreground">Phone Number</Label>
+                <Input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" value={formData.phone} onChange={handleChange} required className="mt-1 h-11 bg-secondary/50 border-border font-body" />
+              </div>
+            )}
 
             <div>
               <Label htmlFor="password" className="font-body text-foreground">Password</Label>
               <div className="relative">
-                <Input id="password" name="password" type={showPassword ? "text" : "password"} placeholder="••••••••" value={formData.password} onChange={handleChange} required minLength={6} className="mt-1 h-11 bg-secondary/50 border-border font-body pr-10" />
+                <Input id="password" name="password" type={showPassword ? "text" : "password"} placeholder="••••••••" value={formData.password} onChange={handleChange} required className="mt-1 h-11 bg-secondary/50 border-border font-body pr-10" />
                 <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -197,8 +175,14 @@ const Auth = () => {
               </div>
             )}
 
-            <Button type="submit" className="w-full h-12 font-body font-semibold text-base" disabled={submitting}>
-              {submitting ? "Please wait…" : authMode === "signin" ? "Sign In" : "Create Account"}
+            {authMode === "signin" && (
+              <div className="text-right">
+                <button type="button" className="text-sm text-primary hover:underline font-body">Forgot password?</button>
+              </div>
+            )}
+
+            <Button type="submit" className="w-full h-12 font-body font-semibold text-base">
+              {authMode === "signin" ? "Sign In" : "Create Account"}
             </Button>
           </form>
 

@@ -1,2 +1,0 @@
-DROP POLICY "Authenticated users can insert contact messages" ON public.contact_messages;
-CREATE POLICY "Authenticated users can insert contact messages" ON public.contact_messages FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);

@@ -9,16 +9,16 @@
     --background: 45 30% 97%;
     --foreground: 150 15% 15%;
 
-    --card: 0 0% 100%;
+    --card: 45 25% 95%;
     --card-foreground: 150 15% 15%;
 
-    --popover: 0 0% 100%;
+    --popover: 45 30% 97%;
     --popover-foreground: 150 15% 15%;
 
     --primary: 152 35% 38%;
     --primary-foreground: 45 30% 97%;
 
-    --secondary: 45 25% 92%;
+    --secondary: 45 25% 90%;
     --secondary-foreground: 150 15% 20%;
 
     --muted: 45 15% 92%;
@@ -30,19 +30,19 @@
     --destructive: 0 72% 51%;
     --destructive-foreground: 45 30% 97%;
 
-    --border: 150 12% 88%;
+    --border: 150 12% 85%;
     --input: 150 12% 85%;
     --ring: 152 35% 38%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 150 18% 18%;
+    --sidebar-background: 150 18% 20%;
     --sidebar-foreground: 45 20% 92%;
     --sidebar-primary: 42 70% 55%;
     --sidebar-primary-foreground: 150 15% 10%;
-    --sidebar-accent: 150 15% 25%;
+    --sidebar-accent: 150 15% 28%;
     --sidebar-accent-foreground: 45 20% 92%;
-    --sidebar-border: 150 12% 28%;
+    --sidebar-border: 150 12% 30%;
     --sidebar-ring: 42 70% 55%;
 
     --hero-overlay: 150 20% 10%;
@@ -111,8 +111,8 @@
   .hero-gradient {
     background: linear-gradient(
       135deg,
-      hsl(var(--hero-overlay) / 0.75) 0%,
-      hsl(var(--primary) / 0.6) 100%
+      hsl(var(--hero-overlay) / 0.7) 0%,
+      hsl(var(--primary) / 0.5) 100%
     );
   }
 
@@ -130,22 +130,7 @@
     background: linear-gradient(
       180deg,
       hsl(var(--sidebar-background)) 0%,
-      hsl(150 20% 14%) 100%
+      hsl(150 20% 15%) 100%
     );
   }
-}
-
-/* Smooth scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.2);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.35);
 }
