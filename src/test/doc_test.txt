@@ -1,0 +1,9 @@
+  5: [
+    { name: "observations", label: "Doctor's Observations", type: "textarea", placeholder: "To be filled by Dr. Nandita during consultation…" },
+    { name: "constitution", label: "Constitutional Type", type: "input", placeholder: "e.g. Phosphorus type" },
+  ],
+  6: [
+    { name: "remedy", label: "Prescribed Remedy", type: "input", placeholder: "e.g. Natrum Muriaticum 200C" },
+    { name: "dosage", label: "Dosage Instructions", type: "textarea", placeholder: "e.g. 3 pellets, once weekly for 4 weeks" },
+    { name: "followup", label: "Follow-up Plan", type: "input", placeholder: "e.g. Review in 4 weeks" },
+  ],

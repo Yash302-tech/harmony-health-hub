@@ -44,15 +44,7 @@ const stepFields: Record<number, { name: string; label: string; type: "input" | 
     { name: "stress", label: "Stress Level", type: "input", placeholder: "e.g. High — work-related" },
     { name: "emotional", label: "Emotional State", type: "textarea", placeholder: "How are you feeling emotionally lately?" },
   ],
-  5: [
-    { name: "observations", label: "Doctor's Observations", type: "textarea", placeholder: "To be filled by Dr. Nandita during consultation…" },
-    { name: "constitution", label: "Constitutional Type", type: "input", placeholder: "e.g. Phosphorus type" },
-  ],
-  6: [
-    { name: "remedy", label: "Prescribed Remedy", type: "input", placeholder: "e.g. Natrum Muriaticum 200C" },
-    { name: "dosage", label: "Dosage Instructions", type: "textarea", placeholder: "e.g. 3 pellets, once weekly for 4 weeks" },
-    { name: "followup", label: "Follow-up Plan", type: "input", placeholder: "e.g. Review in 4 weeks" },
-  ],
+
 };
 
 const Consultation = () => {
@@ -82,26 +74,7 @@ const Consultation = () => {
     toast.success("New consultation started! 🩺");
   };
 
-  const resumeSession = (session: ConsultationSession) => {
-    setActiveSession(session);
-    const currentStepData = session.steps[session.currentStep - 1]?.data || {};
-    setStepData(currentStepData);
-    toast.info(`Resuming from Step ${session.currentStep}: ${session.steps[session.currentStep - 1]?.title}`);
-  };
 
-  const pauseSession = () => {
-    if (!activeSession) return;
-    const updated: ConsultationSession = {
-      ...activeSession,
-      status: "paused",
-      lastUpdatedAt: new Date().toISOString(),
-      pauseReason: "Session paused by patient.",
-    };
-    setSessions(sessions.map((s) => (s.id === updated.id ? updated : s)));
-    setActiveSession(null);
-    setStepData({});
-    toast.info("Session paused — you can resume anytime! ⏸️");
-  };
 
   const saveStepAndNext = () => {
     if (!activeSession) return;
@@ -159,9 +132,7 @@ const Consultation = () => {
                 Step {activeSession.currentStep} of {activeSession.totalSteps}
               </p>
             </div>
-            <Button variant="outline" onClick={pauseSession} className="font-body text-destructive border-destructive/30 hover:bg-destructive/10">
-              <Pause className="w-4 h-4 mr-2" /> Pause & Save
-            </Button>
+            
           </div>
 
           {/* Progress */}
@@ -270,30 +241,22 @@ const Consultation = () => {
         {pausedSessions.length > 0 && (
           <div className="space-y-3">
             <h2 className="text-lg font-display font-semibold text-foreground flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-warning" /> Paused — Resume Anytime
+              <AlertTriangle className="w-5 h-5 text-warning" /> Ongoing Consultation
             </h2>
             {pausedSessions.map((session) => (
               <div key={session.id} className="bg-card rounded-xl border-2 border-warning/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center">
-                    <Pause className="w-6 h-6 text-warning" />
-                  </div>
+                  
                   <div>
                     <p className="font-body font-semibold text-foreground">Consultation #{session.id}</p>
-                    <p className="text-sm text-muted-foreground font-body">
-                      Paused at Step {session.currentStep}/{session.totalSteps} — {session.steps[session.currentStep - 1]?.title}
-                    </p>
-                    {session.pauseReason && (
-                      <p className="text-xs text-warning font-body mt-0.5">{session.pauseReason}</p>
-                    )}
+                    
+                   
                     <div className="mt-2">
-                      <Progress value={(session.currentStep - 1) / session.totalSteps * 100} className="h-1.5 w-40" />
+                      <Progress value={100-30} className="h-1.5 w-40" />
                     </div>
                   </div>
                 </div>
-                <Button onClick={() => resumeSession(session)} className="font-body self-start sm:self-center">
-                  <RotateCcw className="w-4 h-4 mr-2" /> Resume
-                </Button>
+               
               </div>
             ))}
           </div>
@@ -318,9 +281,7 @@ const Consultation = () => {
                     </p>
                   </div>
                 </div>
-                <Button onClick={() => resumeSession(session)} className="font-body self-start sm:self-center">
-                  Continue <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+                
               </div>
             ))}
           </div>
@@ -341,7 +302,7 @@ const Consultation = () => {
                   <div>
                     <p className="font-body font-semibold text-foreground">Consultation #{session.id}</p>
                     <p className="text-sm text-muted-foreground font-body">
-                      All {session.totalSteps} steps completed
+                      All process are completed.
                     </p>
                     <p className="text-xs text-muted-foreground font-body">{session.notes}</p>
                   </div>
@@ -368,26 +329,7 @@ const Consultation = () => {
         )}
 
         {/* How it works */}
-        <div className="bg-card rounded-xl border border-border p-6">
-          <h2 className="text-xl font-display font-semibold text-foreground mb-4">How Resume Consultation Works</h2>
-          <div className="grid sm:grid-cols-3 gap-4">
-            {[
-              { icon: Play, title: "Start Anytime", desc: "Begin your consultation by filling out step-by-step health information." },
-              { icon: Pause, title: "Pause if Needed", desc: "Got an emergency? Pause your session — all progress is auto-saved." },
-              { icon: RotateCcw, title: "Resume Seamlessly", desc: "Come back and pick up exactly where you left off. Nothing is lost." },
-            ].map((item) => (
-              <div key={item.title} className="flex gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <item.icon className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-body font-semibold text-foreground text-sm">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground font-body mt-0.5">{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+    
       </div>
     </DashboardLayout>
   );

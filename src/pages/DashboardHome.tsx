@@ -26,11 +26,8 @@ const DashboardHome = () => {
               Your journey to natural healing with Dr. Nandita Karmakar starts here.
             </p>
             <div className="flex flex-wrap gap-3 mt-5">
-              <Button onClick={() => navigate("/dashboard/consultation")} className="font-body">
+              <Button onClick={() => navigate("/dashboard/consult")} className="font-body">
                 <Stethoscope className="w-4 h-4 mr-2" /> Start Consultation
-              </Button>
-              <Button variant="outline" onClick={() => navigate("/dashboard/appointments")} className="font-body bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20">
-                <CalendarCheck className="w-4 h-4 mr-2" /> Book Appointment
               </Button>
             </div>
           </div>
