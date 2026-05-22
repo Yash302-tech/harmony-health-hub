@@ -13,6 +13,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import NewConsult from "./pages/NewConsultation";
+import  Subscription  from "./pages/subscription";
+import Prescription from "./pages/priscription";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +32,8 @@ const App = () => (
           <Route path="/dashboard/consult" element={<NewConsult />} />
           <Route path="/dashboard/reviews" element={<Reviews />} />
           <Route path="/dashboard/profile" element={<Profile />} />
+          <Route path="/dashboard/priscription" element={<Prescription />} />
+          <Route path="/dashboard/subscription" element={<Subscription />} />
           <Route path="/dashboard/about" element={<About />} />
           <Route path="/dashboard/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />

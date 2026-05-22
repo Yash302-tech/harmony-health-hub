@@ -9,8 +9,10 @@ import {
   LogOut,
   Leaf,
   Menu,
+  FileText ,
   X,
   UserCircle,
+  SubscriptIcon,
   Stethoscope,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
@@ -21,6 +23,9 @@ const navItems = [
   { title: "Consultation", url: "/dashboard/consult", icon: Stethoscope },
   { title: "Reviews", url: "/dashboard/reviews", icon: Star },
   { title: "My Profile", url: "/dashboard/profile", icon: UserCircle },
+  { title: "My Priscriptions", url: "/dashboard/priscription", icon: FileText  },
+
+  { title: "Subscription", url: "/dashboard/subscription", icon: SubscriptIcon },
   { title: "About Doctor", url: "/dashboard/about", icon: Info },
   { title: "Contact", url: "/dashboard/contact", icon: Phone },
 ];
