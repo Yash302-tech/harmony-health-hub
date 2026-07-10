@@ -100,7 +100,7 @@ const Profile = () => {
 
   return (
     <DashboardLayout>
-      <div className="max-w-2xl space-y-6 animate-fade-in">
+      <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
         <div>
           <h1 className="text-3xl font-display font-bold text-foreground">My Profile</h1>
         </div>

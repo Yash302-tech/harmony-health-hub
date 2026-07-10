@@ -15,6 +15,13 @@ import NotFound from "./pages/NotFound";
 import NewConsult from "./pages/NewConsultation";
 import  Subscription  from "./pages/subscription";
 import Prescription from "./pages/priscription";
+import DoctorHome from "./pages/DoctorHome";
+import Users from "./pages/Users";
+import ConsultationsDoctor from "./pages/ConsultationsDoctor";
+import DoctorReviews from "./pages/DoctorReviews";
+import Landing from "./pages/Landing";
+
+
 
 const queryClient = new QueryClient();
 
@@ -24,8 +31,15 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+
+      
         <Routes>
-          <Route path="/" element={<Auth />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Auth />} />
+          <Route path="/dashboard/doctor" element={<DoctorHome />} />
+          <Route path="/dashboard/users" element={<Users />} />
+          <Route path="/dashboard/doctorconsultations" element={<ConsultationsDoctor />} />
+          <Route path="/dashboard/doctorreviews" element={<DoctorReviews />} />
           <Route path="/dashboard" element={<DashboardHome />} />
           <Route path="/dashboard/appointments" element={<Appointments />} />
           <Route path="/dashboard/consultation" element={<Consultation />} />

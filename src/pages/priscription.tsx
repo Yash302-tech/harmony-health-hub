@@ -2,213 +2,944 @@ import { useEffect, useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { auth, db } from "@/firebase";
+
 import {
   collection,
   query,
-  where,
   onSnapshot,
+  DocumentData
 } from "firebase/firestore";
+
 import html2pdf from "html2pdf.js";
 
+
+
 const Prescription = () => {
-  const [prescriptions, setPrescriptions] = useState([]);
-  const [selected, setSelected] = useState(null);
 
-  // ✅ FETCH COMPLETED (DOCTOR REVIEWED)
-  useEffect(() => {
-    const user = auth.currentUser;
-    if (!user) return;
 
-    const q = query(collection(db, "consultations"));
+const [prescriptions,setPrescriptions] =
+useState<DocumentData[]>([]);
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data: any[] = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
 
-      const completed = data.filter(
-        (item) =>
-          item.userId === user.uid &&
-          item.doctorCompleted === true
-      );
+const [selected,setSelected] =
+useState<DocumentData | null>(null);
 
-      setPrescriptions(completed);
-    });
 
-    return () => unsubscribe();
-  }, []);
 
-  // ✅ PDF DOWNLOAD
-  const downloadPDF = () => {
-    const element = document.getElementById("prescription-content");
 
-    html2pdf()
-      .set({
-        margin: 10,
-        filename: "prescription.pdf",
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      })
-      .from(element)
-      .save();
-  };
 
-  return (
-    <DashboardLayout>
-      <div className="space-y-6 animate-fade-in">
+useEffect(()=>{
 
-        {/* HEADER */}
-        <div>
-          <h1 className="text-3xl font-display font-bold text-foreground">
-            My Prescriptions
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Doctor reviewed consultations
-          </p>
-        </div>
 
-        {/* LIST */}
-        {prescriptions.length === 0 ? (
-          <p className="text-muted-foreground">
-            No prescriptions available
-          </p>
-        ) : (
-          <div className="space-y-4">
-            {prescriptions.map((item, index) => (
-              <div
-                key={item.id}
-                onClick={() => setSelected(item)}
-                className="bg-card border border-border p-5 rounded-xl cursor-pointer hover:shadow-md transition"
-              >
-                <p className="font-semibold">
-                  Consultation #{index + 1}
-                </p>
+const unsubscribeAuth =
+auth.onAuthStateChanged((user)=>{
 
-                <p className="text-sm text-muted-foreground mt-1">
-                  Problem: {item.problem || "N/A"}
-                </p>
 
-                <p className="text-sm text-muted-foreground">
-                  Started:{" "}
-                  {item.startedAt
-                    ? new Date(
-                        item.startedAt.seconds * 1000
-                      ).toLocaleString()
-                    : "N/A"}
-                </p>
 
-                <p className="text-sm text-green-600">
-                  Reviewed by doctor
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
+if(!user)
+return;
 
-        {/* MODAL */}
-        {selected && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white w-[600px] max-h-[90vh] overflow-y-auto rounded-xl p-6">
 
-              {/* PRESCRIPTION CONTENT */}
-              <div id="prescription-content">
-               <div id="prescription-content" className="bg-white text-black p-6">
 
-  {/* HEADER */}
-  <div className="text-center border-b pb-3 mb-4">
-    <h2 className="text-2xl font-bold">Dr. Nandita Karmakar</h2>
-    <p className="text-sm">BHMS, MD (Homeopathy)</p>
-    <p className="text-sm">Bhopal, Madhya Pradesh</p>
-  </div>
 
-  {/* PATIENT INFO */}
-  <div className="grid grid-cols-2 gap-2 text-sm mb-4">
-    <p><b>Patient Age:</b> {selected.formData?.age}</p>
-    <p><b>Gender:</b> {selected.formData?.gender}</p>
-    <p><b>Weight:</b> {selected.formData?.weight}</p>
-    <p>
-      <b>Date:</b>{" "}
-      {selected.startedAt
-        ? new Date(selected.startedAt.seconds * 1000).toLocaleDateString()
-        : "N/A"}
-    </p>
-  </div>
 
-  <hr className="my-3" />
+const q=query(
+collection(db,"consultations")
+);
 
-  {/* PROBLEM */}
-  <div className="mb-4">
-    <h3 className="font-semibold text-lg">Chief Complaint</h3>
-    <p className="text-sm mt-1">{selected.problem}</p>
-  </div>
 
-  {/* SYMPTOMS */}
-  <div className="mb-4">
-    <h3 className="font-semibold text-lg">Symptoms</h3>
-    <p className="text-sm">{selected.formData?.complaint}</p>
-    <p className="text-sm">Duration: {selected.formData?.duration}</p>
-    <p className="text-sm">Severity: {selected.formData?.severity}</p>
-  </div>
 
-  {/* HISTORY */}
-  <div className="mb-4">
-    <h3 className="font-semibold text-lg">Medical History</h3>
-    <p className="text-sm">Past Illness: {selected.formData?.pastIllness}</p>
-    <p className="text-sm">Medications: {selected.formData?.medications}</p>
-    <p className="text-sm">Family History: {selected.formData?.familyHistory}</p>
-  </div>
 
-  {/* LIFESTYLE */}
-  <div className="mb-4">
-    <h3 className="font-semibold text-lg">Lifestyle</h3>
-    <p className="text-sm">Sleep: {selected.formData?.sleep}</p>
-    <p className="text-sm">Diet: {selected.formData?.diet}</p>
-    <p className="text-sm">Stress: {selected.formData?.stress}</p>
-    <p className="text-sm">Emotional: {selected.formData?.emotional}</p>
-  </div>
 
-  {/* DOCTOR NOTE (PLACEHOLDER) */}
-  <div className="mb-6">
-    <h3 className="font-semibold text-lg">Prescription</h3>
-    <p className="text-sm italic text-gray-700">
-      (Doctor will provide medicines and instructions here)
-    </p>
-  </div>
 
-  {/* FOOTER */}
-  <div className="flex justify-between items-end mt-8">
-    <div>
-      <p className="text-sm text-green-700">✔ Reviewed by Doctor</p>
-    </div>
+const unsubscribeData =
+onSnapshot(q,(snapshot)=>{
 
-    <div className="text-right">
-      <p className="text-sm">___________________</p>
-      <p className="text-sm font-medium">Doctor Signature</p>
-    </div>
-  </div>
+
+
+const data:DocumentData[] =
+
+snapshot.docs.map(doc=>({
+
+id:doc.id,
+
+...doc.data()
+
+}));
+
+
+
+
+
+
+const completed = data.filter(
+(item:DocumentData)=>{
+
+
+return(
+
+item.userId === user.uid &&
+
+item.doctorCompleted === true
+
+);
+
+
+}
+
+);
+
+
+
+
+
+setPrescriptions(completed);
+
+
+
+});
+
+
+
+
+
+return ()=>unsubscribeData();
+
+
+
+});
+
+
+
+
+
+return ()=>unsubscribeAuth();
+
+
+
+},[]);
+
+
+
+
+
+
+
+
+
+const downloadPDF = () => {
+
+
+const element = document.getElementById(
+"prescription-content"
+);
+
+
+
+if(!element)
+return;
+
+
+
+
+
+html2pdf()
+
+.set({
+
+margin:[15,15,25,15],
+
+
+filename:"doctor-prescription.pdf",
+
+
+
+html2canvas:{
+
+
+scale:2,
+
+
+scrollY:0
+
+
+},
+
+
+
+
+jsPDF:{
+
+
+unit:"mm",
+
+
+format:"a4",
+
+
+orientation:"portrait"
+
+
+}
+
+
+
+})
+
+.from(element)
+
+.save();
+
+
+
+};
+
+
+
+
+
+
+
+return(
+
+
+
+<DashboardLayout>
+
+
+
+<div className="space-y-6 animate-fade-in">
+
+
+
+
+
+
+
+<div>
+
+
+<h1 className="text-3xl font-display font-bold">
+
+My Prescriptions
+
+</h1>
+
+
+
+<p className="text-muted-foreground">
+
+Doctor generated prescriptions
+
+</p>
+
+
 
 </div>
-              </div>
 
-              {/* BUTTONS */}
-              <div className="flex justify-between mt-6">
-                <Button onClick={downloadPDF}>
-                  Download PDF
-                </Button>
 
-                <Button variant="outline" onClick={() => setSelected(null)}>
-                  Close
-                </Button>
-              </div>
 
-            </div>
-          </div>
-        )}
 
-      </div>
-    </DashboardLayout>
-  );
-};
+
+
+
+
+
+{
+
+prescriptions.length===0 ?
+
+
+
+<p>
+
+No prescriptions available
+
+</p>
+
+
+
+
+
+:
+
+
+
+<div className="space-y-4">
+
+
+
+
+
+{
+
+prescriptions.map((item,index)=>(
+
+
+
+<div
+
+key={item.id}
+
+onClick={()=>setSelected(item)}
+
+className="bg-card border p-5 rounded-xl cursor-pointer hover:shadow-md transition"
+
+
+>
+
+
+
+<h3 className="font-bold">
+
+Prescription #{index+1}
+
+</h3>
+
+
+
+
+<p className="text-sm">
+
+Problem:
+
+{
+
+item.problem ||
+
+item.formData?.problem ||
+
+"N/A"
+
+}
+
+</p>
+
+
+
+<p className="text-green-600 text-sm">
+
+✔ Reviewed by Doctor
+
+</p>
+
+
+
+
+</div>
+
+
+
+))
+
+
+}
+
+
+
+</div>
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+
+selected &&
+
+
+
+<div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-[9999] p-5 pt-[200px]">
+
+
+
+
+
+<div className="bg-white w-[850px] max-h-[85vh] rounded-3xl shadow-2xl overflow-hidden mt-10">
+
+
+
+
+
+
+<div className="overflow-y-auto max-h-[70vh] p-8">
+
+
+
+
+
+
+<h1 className="text-2xl font-bold text-green-700 text-center mb-6">
+
+Prescription
+
+</h1>
+
+
+
+
+
+
+
+
+<div id="prescription-content"
+className="pb-10"
+>
+
+
+
+
+
+
+
+<div className="text-center border-b pb-5">
+
+
+<h1 className="text-3xl font-bold text-green-700">
+
+Dr. Nandita Karmakar
+
+</h1>
+
+
+<p>
+
+BHMS, MD (Homeopathy)
+
+</p>
+
+
+<p className="text-sm text-gray-500">
+
+Harmony Health Clinic
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div className="mt-6 bg-green-50 rounded-2xl p-5">
+
+
+<h2 className="font-bold text-lg">
+
+Patient Information
+
+</h2>
+
+
+
+
+
+<div className="grid grid-cols-2 gap-3 text-sm mt-3">
+
+
+<p>
+
+<b>Age:</b>
+
+{selected.formData?.age || "-"}
+
+</p>
+
+
+
+<p>
+
+<b>Gender:</b>
+
+{selected.formData?.gender || "-"}
+
+</p>
+
+
+
+
+<p>
+
+<b>Weight:</b>
+
+{selected.formData?.weight || "-"}
+
+</p>
+
+
+
+
+<p>
+
+<b>Date:</b>
+
+{
+
+selected.startedAt?.seconds
+
+?
+
+new Date(
+selected.startedAt.seconds*1000
+)
+.toLocaleDateString()
+
+:
+
+"N/A"
+
+}
+
+</p>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div className="mt-6">
+
+
+<h2 className="font-bold text-xl text-green-700">
+
+Consultation Details
+
+</h2>
+
+
+
+
+
+
+<div className="bg-gray-50 p-5 rounded-xl mt-3 space-y-2 text-sm">
+
+
+
+<p>
+
+<b>Problem:</b>
+
+{
+
+selected.problem ||
+
+selected.formData?.problem ||
+
+"N/A"
+
+}
+
+</p>
+
+
+
+
+<p>
+
+<b>Complaint:</b>
+
+{
+
+selected.formData?.complaint ||
+
+"N/A"
+
+}
+
+</p>
+
+
+
+
+<p>
+
+<b>Duration:</b>
+
+{
+
+selected.formData?.duration ||
+
+"N/A"
+
+}
+
+</p>
+
+
+
+
+<p>
+
+<b>Severity:</b>
+
+{
+
+selected.formData?.severity ||
+
+"N/A"
+
+}
+
+</p>
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div className="mt-6">
+
+
+<h2 className="font-bold text-xl text-green-700">
+
+Medical History
+
+</h2>
+
+
+
+
+
+<p className="mt-3 text-sm">
+
+Past Illness:
+
+{selected.formData?.pastIllness || "-"}
+
+</p>
+
+
+
+
+<p className="text-sm">
+
+Medications:
+
+{selected.formData?.medications || "-"}
+
+</p>
+
+
+
+
+
+<p className="text-sm">
+
+Family History:
+
+{selected.formData?.familyHistory || "-"}
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div className="mt-6">
+
+
+<h2 className="font-bold text-xl text-green-700">
+
+Doctor Prescription
+
+</h2>
+
+
+
+
+
+<div className="bg-green-50 border rounded-2xl p-5 mt-3 space-y-3">
+
+
+
+
+
+<p>
+
+<b>Medicine:</b>
+
+{
+
+selected.prescription?.medicine ||
+
+selected.medicine ||
+
+"N/A"
+
+}
+
+</p>
+
+
+
+
+
+<p>
+
+<b>Dosage:</b>
+
+{
+
+selected.prescription?.dosage ||
+
+selected.dosage ||
+
+"N/A"
+
+}
+
+</p>
+
+
+
+
+
+
+<p>
+
+<b>Frequency:</b>
+
+{
+
+selected.prescription?.frequency ||
+
+selected.frequency ||
+
+"N/A"
+
+}
+
+</p>
+
+
+
+
+
+
+<p>
+
+<b>Duration:</b>
+
+{
+
+selected.prescription?.duration ||
+
+selected.duration ||
+
+"N/A"
+
+}
+
+</p>
+
+
+
+
+
+
+<p>
+
+<b>Precaution:</b>
+
+{
+
+selected.prescription?.precaution ||
+
+selected.precaution ||
+
+"N/A"
+
+}
+
+</p>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div className="flex justify-between mt-8">
+
+
+
+<p className="text-green-700">
+
+✔ Verified by Doctor
+
+</p>
+
+
+
+
+
+<p>
+
+Doctor Signature
+
+</p>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div className="flex justify-between p-6 border-t">
+
+
+
+<Button onClick={downloadPDF}>
+
+Download PDF
+
+</Button>
+
+
+
+
+
+
+<Button
+
+variant="outline"
+
+onClick={()=>setSelected(null)}
+
+>
+
+Close
+
+</Button>
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+}
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+</DashboardLayout>
+
+
+)
+
+}
+
+
 
 export default Prescription;
