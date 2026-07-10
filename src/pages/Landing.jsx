@@ -79,36 +79,85 @@ const styles = `
   .arrow { display: inline-block; transition: transform .2s; }
   .btn:hover .arrow { transform: translateX(3px); }
 
-  /* Hero */
-  .hero { padding: 40px 0 96px; position: relative; }
-  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 64px; align-items: center; }
-  .hero h1 {
-    font-family: 'DM Serif Display', Georgia, serif; font-weight: 400;
-    font-size: clamp(40px, 5.4vw, 72px); line-height: 1.05; color: var(--green-900);
-    margin: 24px 0 28px;
-  }
-  .hero p.lead { font-size: 17px; color: var(--muted); max-width: 460px; margin-bottom: 36px; }
-  .hero-ctas { display: flex; gap: 14px; margin-bottom: 48px; }
-  .hero-stats { display: flex; gap: 56px; padding-top: 32px; border-top: 1px solid var(--border); max-width: 520px; }
-  .stat .num { font-family: 'DM Serif Display', Georgia, serif; font-size: 36px; color: var(--green-900); }
-  .stat .lbl { font-size: 13px; color: var(--muted); margin-top: 2px; }
+/* Hero */
+.hero {
+  padding: 40px 0 96px;
+  position: relative;
+}
 
-  .hero-visual { position: relative; }
-  .hero-circle {
-    position: absolute; right: -120px; top: -40px; width: 380px; height: 380px;
-    border-radius: 50%; background: var(--green-100); z-index: 0;
-  }
-  .hero-img-wrap { position: relative; z-index: 1; border-radius: 24px; overflow: hidden; aspect-ratio: 4/5; max-width: 460px; margin-left: auto;
-    background: linear-gradient(135deg, #d6e8d8, #b8d4bb);
-    display: grid; place-items: center;
-  }
-  .hero-img-wrap .placeholder {
-    font-family: 'DM Serif Display', Georgia, serif; font-size: 28px; color: var(--green-800); text-align: center; padding: 40px;
-  }
-  .hero-badge {
-    position: absolute; z-index: 2; background: var(--white); padding: 12px 18px;
-    border-radius: 14px; box-shadow: var(--shadow-card); display: flex; align-items: center; gap: 12px;
-  }
+.hero-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-grid > div {
+  width: 100%;
+  max-width: 900px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(40px, 5.4vw, 72px);
+  line-height: 1.05;
+  color: var(--green-900);
+  margin: 24px 0 28px;
+}
+
+.hero .lead {
+  max-width: 760px;
+  margin: 0 auto 32px;
+}
+
+.hero-ctas {
+  justify-content: center;
+}
+
+.hero-stats {
+  justify-content: center;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+
+.hero p.lead {
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 660px;
+  margin-bottom: 36px;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 48px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 56px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+  max-width: 520px;
+}
+
+.stat .num {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 36px;
+  color: var(--green-900);
+}
+
+.stat .lbl {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+
+
+
   .hero-badge.top { top: 60px; right: -20px; }
   .hero-badge.bottom { bottom: 60px; left: -30px; }
   .badge-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--cream-2); display: grid; place-items: center; color: var(--gold); font-size: 18px; }
@@ -117,45 +166,211 @@ const styles = `
   .badge-text strong { display: block; font-size: 15px; color: var(--text); }
   .badge-text span { color: var(--muted); font-size: 12px; }
 
-  /* About */
-  .about { background: var(--cream-2); padding: 100px 0; }
-  .about-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: center; }
-  .about-photo { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 4/5;
-    background: linear-gradient(135deg, #e4eae0, #c5d5c1); display: grid; place-items: end center; padding-bottom: 30px;
-    box-shadow: 0 20px 40px rgba(31,77,58,0.1);
-  }
-  .about-photo-name {
-    color: #fff; text-align: center; padding: 0 20px;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
-  }
-  .about-photo-name h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 28px; font-weight: 400; }
-  .about-photo-name p { font-size: 13px; opacity: 0.9; margin-top: 4px; }
-  .about h2 { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(32px, 3.8vw, 48px); line-height: 1.15; color: var(--green-900); margin: 20px 0 24px; }
-  .about p.bio { color: var(--muted); margin-bottom: 32px; font-size: 16px; }
-  .credentials { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
-  .cred { background: var(--white); border-radius: 14px; padding: 16px; display: flex; gap: 12px; align-items: flex-start; }
-  .cred-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--green-100); display: grid; place-items: center; color: var(--green-800); flex-shrink: 0; font-size: 16px; }
-  .cred strong { display: block; font-size: 14px; color: var(--text); }
-  .cred span { font-size: 12px; color: var(--muted); }
-  .quick-stats { background: var(--white); border-radius: 16px; padding: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .qs { text-align: center; }
-  .qs .n { font-family: 'DM Serif Display', Georgia, serif; font-size: 32px; color: var(--green-700); }
-  .qs .l { font-size: 12px; color: var(--muted); margin-top: 4px; }
+/* About */
+.about {
+  background: var(--cream-2);
+  padding: 100px 0;
+}
 
-  /* Services */
-  .services { background: var(--green-50); padding: 100px 0; }
-  .section-head { text-align: center; max-width: 720px; margin: 0 auto 64px; }
-  .section-head h2 { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(34px, 4vw, 52px); line-height: 1.1; color: var(--green-900); margin: 18px 0 18px; }
-  .section-head p { color: var(--muted); font-size: 16px; }
-  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .service-card { background: var(--white); border-radius: 18px; padding: 32px; display: flex; flex-direction: column; gap: 18px; }
-  .service-icon { width: 52px; height: 52px; border-radius: 12px; background: var(--green-100); display: grid; place-items: center; color: var(--green-800); font-size: 22px; }
-  .service-card h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 24px; color: var(--green-800); font-weight: 400; }
-  .service-card .desc { color: var(--muted); font-size: 14px; }
-  .service-card ul { list-style: none; border-top: 1px solid var(--border); padding-top: 18px; display: flex; flex-direction: column; gap: 10px; }
-  .service-card li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text); }
-  .check { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--green-700); display: grid; place-items: center; color: var(--green-700); font-size: 11px; flex-shrink: 0; }
+.about-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.about-content {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.about h2 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(32px, 3.8vw, 48px);
+  line-height: 1.15;
+  color: var(--green-900);
+  margin: 20px 0 24px;
+  text-align: center;
+}
+
+.about p.bio {
+  color: var(--muted);
+  margin: 0 auto 40px;
+  font-size: 16px;
+  line-height: 1.9;
+  max-width: 850px;
+  text-align: center;
+}
+
+.credentials {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.cred {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  transition: 0.25s;
+}
+
+.cred:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(31, 77, 58, 0.08);
+}
+
+.cred-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--green-100);
+  display: grid;
+  place-items: center;
+  color: var(--green-800);
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.cred strong {
+  display: block;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.cred span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.quick-stats {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 28px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.qs {
+  text-align: center;
+}
+
+.qs .n {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 32px;
+  color: var(--green-700);
+}
+
+.qs .l {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+
+
+/* Services */
+.services{
+  background:var(--green-50);
+  padding:110px 0;
+}
+
+.section-head{
+  text-align:center;
+  max-width:760px;
+  margin:0 auto 70px;
+}
+
+.section-head h2{
+  font-family:'DM Serif Display', Georgia, serif;
+  font-size:clamp(34px,4vw,52px);
+  line-height:1.15;
+  color:var(--green-900);
+  margin:22px 0 20px;
+}
+
+.section-head p{
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.8;
+  max-width:680px;
+  margin:0 auto;
+}
+
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+
+.service-card{
+  background:var(--white);
+  border-radius:18px;
+  padding:32px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.service-icon{
+  width:52px;
+  height:52px;
+  border-radius:12px;
+  background:var(--green-100);
+  display:grid;
+  place-items:center;
+  color:var(--green-800);
+  font-size:22px;
+}
+
+.service-card h3{
+  font-family:'DM Serif Display', Georgia, serif;
+  font-size:24px;
+  color:var(--green-800);
+  font-weight:400;
+  line-height:1.3;
+}
+
+.service-card .desc{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.8;
+}
+
+.service-card ul{
+  list-style:none;
+  border-top:1px solid var(--border);
+  padding-top:18px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.service-card li{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:14px;
+  color:var(--text);
+  line-height:1.6;
+}
+
+.check{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  border:1.5px solid var(--green-700);
+  display:grid;
+  place-items:center;
+  color:var(--green-700);
+  font-size:11px;
+  flex-shrink:0;
+}
   /* How it works */
   .how { background: var(--cream-2); padding: 100px 0; }
   .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; position: relative; }
@@ -224,71 +439,42 @@ const Landing = () => {
             <a href="#how">How It Works</a>
             <a href="#why">Why Us</a>
           </nav>
-          <a href="#login" className="btn btn-primary">Login <ArrowRight size={16} className="arrow" /></a>
+          <a href="/login" className="btn btn-primary">Login <ArrowRight size={16} className="arrow" /></a>
         </div>
       </header>
 
       {/* HERO */}
-      <section className="hero">
+      <section className="hero" id="hero">
         <div className="container hero-grid">
           <div>
-            <span className="eyebrow"><span className="dot" />Trusted General Physician</span>
+            <span className="eyebrow"><span className="dot" />Trusted Homeopathic  Physician</span>
             <h1>
               Compassionate care, <span className="dn-italic">thoughtful</span> medicine — for every stage of life.
             </h1>
             <p className="lead">
-              Meet Dr. Nandita — a senior general physician with 12+ years of experience helping families stay healthy through honest diagnosis, modern treatment and warm, unhurried consultations.
+             Meet Dr. Nandita Karmakar — a trusted homeopathic physician with over 12 years of experience in delivering compassionate, patient-centered care. By combining classical homeopathic principles with a deep understanding of each individual's health, she provides safe, natural, and personalized treatments that support lasting recovery and overall well-being.
             </p>
             <div className="hero-ctas">
-              <a href="#login" className="btn btn-primary">Get Started <ArrowRight size={16} className="arrow" /></a>
+              <a href="/login" className="btn btn-primary">Get Started <ArrowRight size={16} className="arrow" /></a>
               <a href="#services" className="btn btn-outline">Explore Services</a>
             </div>
-            <div className="hero-stats">
-              <div className="stat"><div className="num">12+</div><div className="lbl">Years experience</div></div>
-              <div className="stat"><div className="num">15K+</div><div className="lbl">Happy patients</div></div>
-              <div className="stat"><div className="num">4.9★</div><div className="lbl">Average rating</div></div>
-            </div>
+            
           </div>
-          <div className="hero-visual">
-            <div className="hero-circle" />
-            <div className="hero-img-wrap">
-
-<img
-src="https://img.freepik.com/free-vector/ female-doctor-character-background_1270-84.jpg"
-alt="Female Doctor"
-className="doctor-animation-img"
-/>
-
-</div>
-            <div className="hero-badge top">
-              <div className="badge-icon"><Star size={18} fill="currentColor" /></div>
-              <div className="badge-text"><strong>4.9 / 5.0</strong><span>2,400+ reviews</span></div>
-            </div>
-            <div className="hero-badge bottom">
-              <div className="badge-icon green"><ShieldCheck size={18} /></div>
-              <div className="badge-text"><strong>Verified Doctor</strong><span>IMA Registered</span></div>
-            </div>
-          </div>
+         
         </div>
       </section>
 
       {/* ABOUT */}
       <section className="about" id="about">
         <div className="container about-grid">
-          <div className="about-photo">
-            <div className="about-photo-name">
-              <h3>Dr. Nandita Sharma</h3>
-              <p>MBBS, MD — General Physician</p>
-            </div>
-          </div>
           <div>
             <span className="eyebrow"><span className="dot" />About the Doctor</span>
-            <h2>A decade of dedication to thoughtful, family-first medicine.</h2>
+            <h2>Compassionate Homeopathic Care for Every Stage of Life</h2>
             <p className="bio">
-              Dr. Nandita is a senior general physician with deep expertise in internal medicine, chronic disease management and preventive health. She believes great medicine begins with great listening — and her patients return again and again because she treats them like people, not just charts.
+              With over 12 years of experience in classical homeopathy, Dr. Nandita has helped individuals and families achieve better health through personalized and holistic treatment. She carefully studies each patient's physical, emotional, and lifestyle factors to identify the underlying cause of illness, creating customized treatment plans that support the body's natural healing process. Her compassionate care and dedication to long-term wellness have made her a trusted choice for homeopathic consultation.
             </p>
             <div className="credentials">
-              <div className="cred"><div className="cred-icon"><GraduationCap size={18} /></div><div><strong>MBBS, MD (Internal Medicine)</strong><span>Top-ranked medical college</span></div></div>
+              <div className="cred"><div className="cred-icon"><GraduationCap size={18} /></div><div><strong>BHMS, MD (Homeopathy)</strong><span>Qualified Homeopathic Physician with Advanced Clinical Training</span></div></div>
               <div className="cred"><div className="cred-icon"><Award size={18} /></div><div><strong>12+ Years Clinical Practice</strong><span>General &amp; preventive medicine</span></div></div>
               <div className="cred"><div className="cred-icon"><Users size={18} /></div><div><strong>15,000+ Happy Patients</strong><span>Across India &amp; abroad</span></div></div>
               <div className="cred"><div className="cred-icon"><ShieldCheck size={18} /></div><div><strong>Member, Indian Medical Association</strong><span>Verified &amp; licensed practitioner</span></div></div>
@@ -345,8 +531,8 @@ className="doctor-animation-img"
           <div className="steps">
             {[
               { n: 1, Icon: User, t: "Create Your Profile", d: "Sign in and share your basic health details, symptoms, and any past records. This helps the doctor understand you before the consultation even begins." },
-              { n: 2, Icon: Calendar, t: "Book a Slot", d: "Pick a convenient time from Dr. Nandita's live calendar. Get instant confirmation and a reminder so you never miss your appointment." },
-              { n: 3, Icon: Video, t: "Consult Online or In-Clinic", d: "Meet on a secure video call from home or visit the clinic — whichever feels right. Each session is private, unhurried and judgement-free." },
+              { n: 2,Icon: Calendar, t: "Start Consultation", d: "Begin your consultation by filling out a detailed health assessment form. Share your symptoms, medical history, and concerns so Dr. Nandita can carefully review your case and provide a personalized homeopathic treatment plan."},
+              {n: 3, Icon: Video, t: "Consultation Review",d: "Dr. Nandita thoroughly evaluates your consultation details, symptoms, and medical history to understand the root cause of your condition before preparing a personalized homeopathic treatment plan."},  
               { n: 4, Icon: ClipboardList, t: "Get Your Care Plan", d: "Receive a digital prescription, lifestyle plan and follow-up schedule. Everything is saved in your dashboard for easy access anytime." },
             ].map((s) => (
               <div className="step" key={s.n}>
@@ -386,7 +572,7 @@ className="doctor-animation-img"
           <span className="eyebrow dark"><span className="dot" />Start Your Care Today</span>
           <h2>Your next consultation is just <span className="dn-gold-italic">one click</span> away.</h2>
           <p>Sign in to book a slot, view past prescriptions and track your health journey — all from your personal Dr. Nandita dashboard.</p>
-          <a href="#" className="btn btn-gold">Login to Continue <ArrowRight size={16} className="arrow" /></a>
+          <a href="/login" className="btn btn-gold">Login to Continue <ArrowRight size={16} className="arrow" /></a>
         </div>
       </section>
 
@@ -422,9 +608,9 @@ className="doctor-animation-img"
             <div>
               <h5>Account</h5>
               <ul>
-                <li><a href="#login">Login</a></li>
-                <li><a href="#login">Book Consultation</a></li>
-                <li><a href="#login">Patient Dashboard</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="#hero">Book Consultation</a></li>
+                <li><a href="#hero">Patient Dashboard</a></li>
               </ul>
             </div>
           </div>
