@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { auth, db } from "@/firebase";
+import img from "./ChatGPT Image Jul 11, 2026, 02_28_41 PM.png"
 
 import {
   collection,
@@ -361,7 +362,7 @@ selected &&
 
 
 
-<div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-[9999] p-5 pt-[200px]">
+<div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-[9999999] p-5 pt-[250px]">
 
 
 
@@ -685,134 +686,51 @@ Family History:
 
 
 
-
 <div className="mt-6">
-
-
-<h2 className="font-bold text-xl text-green-700">
-
-Doctor Prescription
-
-</h2>
-
-
-
-
-
-<div className="bg-green-50 border rounded-2xl p-5 mt-3 space-y-3">
-
-
-
-
-
-<p>
-
-<b>Medicine:</b>
-
-{
-
-selected.prescription?.medicine ||
-
-selected.medicine ||
-
-"N/A"
-
-}
-
-</p>
-
-
-
-
-
-<p>
-
-<b>Dosage:</b>
-
-{
-
-selected.prescription?.dosage ||
-
-selected.dosage ||
-
-"N/A"
-
-}
-
-</p>
-
-
-
-
-
-
-<p>
-
-<b>Frequency:</b>
-
-{
-
-selected.prescription?.frequency ||
-
-selected.frequency ||
-
-"N/A"
-
-}
-
-</p>
-
-
-
-
-
-
-<p>
-
-<b>Duration:</b>
-
-{
-
-selected.prescription?.duration ||
-
-selected.duration ||
-
-"N/A"
-
-}
-
-</p>
-
-
-
-
-
-
-<p>
-
-<b>Precaution:</b>
-
-{
-
-selected.prescription?.precaution ||
-
-selected.precaution ||
-
-"N/A"
-
-}
-
-</p>
-
-
-
+  <h2 className="font-bold text-xl text-green-700">
+    Doctor Prescription
+  </h2>
+
+  <div className="bg-green-50 border rounded-2xl p-5 mt-3 space-y-3">
+
+    <p>
+      <b>Number of Medicines:</b>{" "}
+      {selected.prescription?.medicineCount || "-"}
+    </p>
+
+    <p>
+      <b>Medicines:</b>{" "}
+      {selected.prescription?.medicines || "-"}
+    </p>
+
+    <p>
+      <b>Dosage:</b>{" "}
+      {selected.prescription?.dosage || "-"}
+    </p>
+
+    <p>
+      <b>Times Per Day:</b>{" "}
+      {selected.prescription?.timesPerDay || "-"}
+    </p>
+
+    <p>
+      <b>Duration:</b>{" "}
+      {selected.prescription?.duration || "-"}
+    </p>
+
+    <p>
+      <b>Precautions:</b>{" "}
+      {selected.prescription?.precautions || "-"}
+    </p>
+
+    <p>
+      <b>Doctor's Notes:</b>{" "}
+      {selected.prescription?.notes || "-"}
+    </p>
+
+  </div>
 
 </div>
-
-
-
-</div>
-
 
 
 
@@ -833,14 +751,16 @@ selected.precaution ||
 
 
 
-
-
-<p>
-
-Doctor Signature
-
-</p>
-
+<div className="flex flex-col items-center">
+  <img
+    src={img}
+    alt="Doctor Signature"
+    className="w-60 h-auto object-contain"
+  />
+  <p className="text-m text-gray-600 -mt-1">
+    Doctor Signature
+  </p>
+</div>
 
 
 

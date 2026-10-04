@@ -912,7 +912,7 @@ loading
 avgRating
 }
 
-label="Average rating"
+label="Average of Last 5 Reviews"
 
 />
 
